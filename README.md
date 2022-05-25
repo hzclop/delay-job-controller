@@ -1,2 +1,3 @@
-# delay-job-controller
-kubernetes delay job controller
+# Kubernetes DelayJob Controller
+* k8s Job目前通常被用来构建流程化业务, 但是一些流程化业务需要在未来某个时间执行, 目前Job只能依赖提交方在达到未来时间时提交, 通常需要依赖消息队列或者编写更多的业务逻辑, 如果需要取消Job这将是个麻烦的事情 .
+* 基于以上原因本项目提供delayJob控制器可以提交未来某个时间需要执行的Job作业, 当时间到达后自动执行Job任务 .
