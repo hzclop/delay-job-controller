@@ -5,7 +5,7 @@ import (
 	"fmt"
 	kubeinformers "k8s.io/client-go/informers"
 	"k8s.io/delay-job-controller/config"
-	"k8s.io/delay-job-controller/controller"
+	"k8s.io/delay-job-controller/controller/delayjob"
 	"k8s.io/delay-job-controller/infrastructure/kubernetes"
 	"k8s.io/delay-job-controller/log"
 	clientset "k8s.io/delay-job-controller/pkg/generated/clientset/versioned"
@@ -29,7 +29,7 @@ func NewControllerServer() server.Server {
 type ControllerServer struct {
 	ctx                context.Context
 	cancel             context.CancelFunc
-	delayJobController *controller.DelayJobController
+	delayJobController *delayjob.DelayJobController
 	stop               chan struct{}
 }
 
@@ -58,7 +58,7 @@ func (c *ControllerServer) Start() error {
 	kubeInformerFactory := kubeinformers.NewSharedInformerFactory(kubernetes.KubernetesClient(), time.Second*30)
 	delayInformerFactory := informers.NewSharedInformerFactory(delaySet, time.Second*30)
 
-	ctr, err := controller.NewController(
+	ctr, err := delayjob.NewController(
 		kubernetes.KubernetesClient(),
 		delaySet,
 		kubeInformerFactory.Batch().V1().Jobs(),

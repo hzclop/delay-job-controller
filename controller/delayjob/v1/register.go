@@ -12,13 +12,13 @@ const (
 )
 
 var SchemeGroupVersion = schema.GroupVersion{
-	Group: GroupName,
+	Group:   GroupName,
 	Version: Version,
 }
 
 var (
 	SchemeBuilder = runtime.NewSchemeBuilder(addKnownTypes)
-	AddToScheme = SchemeBuilder.AddToScheme
+	AddToScheme   = SchemeBuilder.AddToScheme
 )
 
 func Kind(kind string) schema.GroupKind {

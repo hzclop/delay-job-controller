@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package controller
+package delayjob
 
 import (
 	"context"
@@ -34,6 +34,7 @@ type djControlInterface interface {
 	// GetDelayJob retrieves a DelayJob.
 	GetDelayJob(ctx context.Context, namespace, name string) (*v1.DelayJob, error)
 	UpdateStatus(ctx context.Context, cj *v1.DelayJob) (*v1.DelayJob, error)
+	DeleteDelayJob(ctx context.Context, namespace, name string) error
 }
 
 // realJobControl is the default implementation of jobControlInterface.
@@ -47,6 +48,10 @@ func (r *realDelayJobControl) GetDelayJob(ctx context.Context, namespace, name s
 
 func (r *realDelayJobControl) UpdateStatus(ctx context.Context, cj *v1.DelayJob) (*v1.DelayJob, error) {
 	return r.KubeClient.DelayjobV1().DelayJobs(cj.Namespace).UpdateStatus(ctx, cj, metav1.UpdateOptions{})
+}
+
+func (r *realDelayJobControl) DeleteDelayJob(ctx context.Context, namespace, name string) error {
+	return r.KubeClient.DelayjobV1().DelayJobs(namespace).Delete(ctx, name, metav1.DeleteOptions{})
 }
 
 // ------------------------------------------------------------------ //
